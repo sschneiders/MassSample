@@ -24,8 +24,7 @@ struct FMSEntitySpawnTemplate
 
 	FMSEntitySpawnTemplate(const UMassEntityConfigAsset* MassEntityConfig, const UWorld* World)
 	{
-		AGameStateBase* GameState = World->GetGameState();
-		Template = *MassEntityConfig->GetConfig().GetOrCreateEntityTemplate(*GameState, *MassEntityConfig);
+		Template = MassEntityConfig->GetConfig().GetOrCreateEntityTemplate(*World, *MassEntityConfig);
 	};
 
 	FMassArchetypeHandle FinalizeTemplateArchetype(UMassEntitySubsystem* EntitySubSystem)

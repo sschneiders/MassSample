@@ -9,7 +9,7 @@
 #include "ProjectileSim/Fragments/MSProjectileFragments.h"
 #include "NiagaraSystem.h"
 
-void UMSProjectileSimTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, UWorld& World) const
+void UMSProjectileSimTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const
 {
 	
 	

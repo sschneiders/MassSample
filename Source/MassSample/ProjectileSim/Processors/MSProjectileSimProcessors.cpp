@@ -28,10 +28,12 @@ void UMSProjectileSimProcessors::ConfigureQueries()
 	LineTraceFromPreviousPosition.AddRequirement<FMassVelocityFragment>(EMassFragmentAccess::ReadOnly);
 	LineTraceFromPreviousPosition.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadOnly);
 	LineTraceFromPreviousPosition.AddTagRequirement<FProjectileTag>(EMassFragmentPresence::All);
+	LineTraceFromPreviousPosition.RegisterWithProcessor(*this);
 
 	MyQuery = LineTraceFromPreviousPosition;
 
 	MyQuery.AddRequirement<FSampleColorFragment>(EMassFragmentAccess::ReadOnly,EMassFragmentPresence::Optional);
+	MyQuery.RegisterWithProcessor(*this);
 
 	//LineTraceFromPreviousPosition.AddTagRequirement<FNotMovingTag>(EMassFragmentPresence::None);
 }
@@ -40,7 +42,7 @@ void UMSProjectileSimProcessors::Execute(UMassEntitySubsystem& EntitySubsystem, 
 {
 
 	
-	LineTraceFromPreviousPosition.ForEachEntityChunk(EntitySubsystem,Context,[this](FMassExecutionContext& Context)
+	LineTraceFromPreviousPosition.ParallelForEachEntityChunk(EntitySubsystem,Context,[this](FMassExecutionContext& Context)
 	{
 		QUICK_SCOPE_CYCLE_COUNTER(STAT_MASS_LineTraceFromPreviousPosition);
 
@@ -72,9 +74,7 @@ void UMSProjectileSimProcessors::Execute(UMassEntitySubsystem& EntitySubsystem, 
 		
 				FMassEntityHandle Entity = Context.GetEntity(i);
 				
-				FConstStructView HitResultConstStruct = FConstStructView::Make(FHitResultFragment(HitResult));
-		
-				Context.Defer().PushCommand(FCommandAddFragmentInstance(Entity, HitResultConstStruct));
+				Context.Defer().PushCommand<FMassCommandAddFragmentInstances>(Entity, FHitResultFragment(HitResult));
 			}
 		}
 	});

@@ -32,3 +32,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int32 SpawnEntity();
 };
+template<>
+struct TMassExternalSubsystemTraits<UMSSubsystem> final
+{
+	enum
+	{
+		GameThreadOnly = true
+	};
+};

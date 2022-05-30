@@ -24,6 +24,7 @@ protected:
 	{
 		DebugPointDisplay.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadOnly);
 		DebugPointDisplay.AddTagRequirement<FMassSampleDebuggableTag>(EMassFragmentPresence::All);
+		DebugPointDisplay.RegisterWithProcessor(*this);
 	}
 
 	virtual void Execute(UMassEntitySubsystem& EntitySubsystem, FMassExecutionContext& Context) override

@@ -22,10 +22,13 @@ void UMSProjectileHitObserver::ConfigureQueries()
 	StopHitsQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadWrite);
 	StopHitsQuery.AddRequirement<FLineTraceFragment>(EMassFragmentAccess::ReadOnly);
 	StopHitsQuery.AddRequirement<FHitResultFragment>(EMassFragmentAccess::ReadOnly);
-
+	StopHitsQuery.RegisterWithProcessor(*this);
+	
 	//You can always add another query for different in the same observer processor!
 	CollisionHitEventQuery.AddTagRequirement<FFireHitEventTag>(EMassFragmentPresence::All);
 	CollisionHitEventQuery.AddRequirement<FHitResultFragment>(EMassFragmentAccess::ReadOnly);
+	CollisionHitEventQuery.RegisterWithProcessor(*this);
+
 
 }
 

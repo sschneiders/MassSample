@@ -28,9 +28,7 @@ protected:
 	FMassEntityQuery AddToHashGridQuery;
 	FMassEntityQuery UpdateHashGridQuery;
 	FMassEntityQuery RemoveFromGridEntityQuery;
-	UMSSubsystem* MassSampleSystem;
 
-	virtual void Initialize(UObject& Owner) override;
 	virtual void ConfigureQueries() override;
 	virtual void Execute(UMassEntitySubsystem& EntitySubsystem, FMassExecutionContext& Context) override;
 };

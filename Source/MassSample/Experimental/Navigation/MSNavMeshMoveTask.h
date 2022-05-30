@@ -12,6 +12,7 @@
 #include "MSSubsystem.h"
 #include "NavigationSystem.h"
 #include "StateTreeExecutionContext.h"
+#include "StateTreeLinker.h"
 #include "MSNavMeshMoveTask.generated.h"
 
 USTRUCT()

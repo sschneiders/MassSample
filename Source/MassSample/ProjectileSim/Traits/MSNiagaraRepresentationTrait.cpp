@@ -10,7 +10,7 @@
 #include "NiagaraSystem.h"
 #include "Common/Fragments/MSFragments.h"
 
-void UMSNiagaraRepresentationTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, UWorld& World) const
+void UMSNiagaraRepresentationTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,const UWorld& World) const
 {
 
 	
@@ -24,7 +24,7 @@ void UMSNiagaraRepresentationTrait::BuildTemplate(FMassEntityTemplateBuildContex
 	BuildContext.AddSharedFragment(SharedFragment);
 }
 
-void UMSNiagaraRepresentationTrait::ValidateTemplate(FMassEntityTemplateBuildContext& BuildContext, UWorld& World) const
+void UMSNiagaraRepresentationTrait::ValidateTemplate(FMassEntityTemplateBuildContext& BuildContext,const UWorld& World) const
 {
 	if (!SharedNiagaraSystem)
 	{

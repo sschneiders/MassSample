@@ -8,10 +8,9 @@
 
 UMSNiagaraRepresentationProcessors::UMSNiagaraRepresentationProcessors()
 {
-	bAutoRegisterWithProcessingPhases = true;
-	//We don't care about rendering on the dedicated server!
+	// We don't care about rendering on the dedicated server!
 	ExecutionFlags = (int32)(EProcessorExecutionFlags::Client | EProcessorExecutionFlags::Standalone);
-	//join the other representation processors in their existing group
+	// Join the other representation processors in their existing group
 	ExecutionOrder.ExecuteInGroup = UE::Mass::ProcessorGroupNames::Representation;
 }
 
@@ -19,6 +18,9 @@ void UMSNiagaraRepresentationProcessors::ConfigureQueries()
 {
 	PositionToNiagaraFragmentQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadOnly);
 	PositionToNiagaraFragmentQuery.AddSharedRequirement<FSharedNiagaraSystemFragment>(EMassFragmentAccess::ReadWrite);
+	PositionToNiagaraFragmentQuery.RegisterWithProcessor(*this);
+
+	PositionToNiagaraFragmentQuery.RegisterWithProcessor(*this);
 }
 
 
@@ -26,7 +28,7 @@ void UMSNiagaraRepresentationProcessors::Execute(UMassEntitySubsystem& EntitySub
 {
 
 	
-		//query mass for transform data
+		// Query mass for transform data
 		PositionToNiagaraFragmentQuery.ForEachEntityChunk(EntitySubsystem,Context,
 			[&,this](FMassExecutionContext& Context)
 			{
@@ -42,12 +44,9 @@ void UMSNiagaraRepresentationProcessors::Execute(UMassEntitySubsystem& EntitySub
 				//todo-performance this should also probably not even happen if the total array num isn't going to change 
 				int32 ArrayResizeAmount = SharedNiagaraFragment.IteratorOffset + QueryLength;
 				
-				//todo-performance if we want multithreading does this need to happen on another foreach?
-				//I did have this parrallelfor'd before but 
-				
 				SharedNiagaraFragment.IteratorOffset += QueryLength;
-				SharedNiagaraFragment.ParticlePositions.SetNumUninitialized(ArrayResizeAmount);
-				SharedNiagaraFragment.ParticleDirectionVectors.SetNumUninitialized(ArrayResizeAmount);
+				SharedNiagaraFragment.ParticlePositions.SetNum(ArrayResizeAmount);
+				SharedNiagaraFragment.ParticleDirectionVectors.SetNum(ArrayResizeAmount);
 				
 				
 				for (int32 i = 0; i < QueryLength; ++i)

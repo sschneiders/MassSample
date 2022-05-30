@@ -33,7 +33,8 @@ void UMSNavMeshProcessors::ConfigureQueries()
 	EntityQuery.AddRequirement<FMassVelocityFragment>(EMassFragmentAccess::ReadWrite);
 
 	EntityQuery.AddRequirement<FMassMoveTargetFragment>(EMassFragmentAccess::ReadWrite);
-	
+	EntityQuery.RegisterWithProcessor(*this);
+
 }
 
 void UMSNavMeshProcessors::Execute(UMassEntitySubsystem& EntitySubsystem, FMassExecutionContext& Context)

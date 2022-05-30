@@ -115,6 +115,10 @@ void UMSPathologicalBenchmarkProcessor::Initialize(UObject& Owner)
  		PathologicQuery3.AddRequirement(FAlberta::StaticStruct(),EMassFragmentAccess::ReadWrite);
  		PathologicQuery3.AddRequirement(FBritishColumbia::StaticStruct(),EMassFragmentAccess::ReadWrite);
 		PathologicQuery3.AddRequirement(FManitoba::StaticStruct(), EMassFragmentAccess::ReadWrite);
+ 		
+ 		PathologicQuery3.RegisterWithProcessor(*this);
+ 		PathologicQuery9.RegisterWithProcessor(*this);
+
  	}
  }
 

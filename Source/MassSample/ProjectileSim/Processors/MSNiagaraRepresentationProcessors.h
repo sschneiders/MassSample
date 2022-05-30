@@ -19,14 +19,6 @@ class MASSSAMPLE_API UMSNiagaraRepresentationProcessors : public UMassProcessor
 public:
 	
 	UMSNiagaraRepresentationProcessors();
-
-
-	void Initialize(UObject& Owner)
-	{
-		Super::Initialize(Owner);
-		//get subsystems here etc..
-	}
-
 	
 	virtual void ConfigureQueries() override;
 

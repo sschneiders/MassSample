@@ -16,6 +16,8 @@ void UMSObserverOnAdd::ConfigureQueries()
 	// We still make a query here. You can add other things to query for besides the observed fragments 
 	// EntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadOnly);
 	EntityQuery.AddRequirement<FSampleColorFragment>(EMassFragmentAccess::ReadWrite);
+	EntityQuery.RegisterWithProcessor(*this);
+
 }
 
 void UMSObserverOnAdd::Execute(UMassEntitySubsystem& EntitySubsystem, FMassExecutionContext& Context)

@@ -15,7 +15,7 @@ class MASSSAMPLE_API UMSProjectileSimTrait : public UMassEntityTraitBase
 {
 	GENERATED_BODY()
 public:
-	virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, UWorld& World) const override;
+	virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const override;
 
 	UPROPERTY(EditAnywhere)
 	bool bFiresHitEventToActors = true;

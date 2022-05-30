@@ -33,6 +33,9 @@ void UMSMovementProcessor::ConfigureQueries()
 	//must have an FMassVelocityFragment and we are reading and changing it
 	MovementEntityQuery.AddRequirement<FMassVelocityFragment>(EMassFragmentAccess::ReadWrite);
 
+
+	MovementEntityQuery.RegisterWithProcessor(*this);
+
 	/** FIXME: Conceptual - UMassRandomVelocityInitializer might be stealing FMassVelocityFragment,
 	noticed that if I put an input matching what the UMassRandomVelocityInitializer expects
 	the velocity gets randomized. Maybe we require to create a new fragment exclusive for the trait **/

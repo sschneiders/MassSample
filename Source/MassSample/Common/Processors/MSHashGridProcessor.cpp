@@ -13,21 +13,22 @@ UMSHashGridProcessor::UMSHashGridProcessor()
 	ExecutionFlags = (int32)EProcessorExecutionFlags::All;
 }
 
-void UMSHashGridProcessor::Initialize(UObject& Owner)
-{
-	MassSampleSystem = GetWorld()->GetSubsystem<UMSSubsystem>();
-}
 
 void UMSHashGridProcessor::ConfigureQueries()
 {
 	UpdateHashGridQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadOnly);
 	UpdateHashGridQuery.AddRequirement<FMSGridCellStartingLocationFragment>(EMassFragmentAccess::ReadWrite);
 	UpdateHashGridQuery.AddTagRequirement<FMSInHashGridTag>(EMassFragmentPresence::All);
+	UpdateHashGridQuery.AddSubsystemRequirement<UMSSubsystem>(EMassFragmentAccess::ReadWrite);
+	UpdateHashGridQuery.RegisterWithProcessor(*this);
 }
 
 void UMSHashGridProcessor::Execute(UMassEntitySubsystem& EntitySubsystem, FMassExecutionContext& Context)
 {
-	UpdateHashGridQuery.ForEachEntityChunk(EntitySubsystem, Context, [this](FMassExecutionContext& Context)
+
+	auto& MassSampleSystem = Context.GetMutableSubsystemChecked<UMSSubsystem>(EntitySubsystem.GetWorld());
+
+	UpdateHashGridQuery.ForEachEntityChunk(EntitySubsystem, Context, [&,this](FMassExecutionContext& Context)
 	{
 		const int32 NumEntities = Context.GetNumEntities();
 
@@ -37,7 +38,7 @@ void UMSHashGridProcessor::Execute(UMassEntitySubsystem& EntitySubsystem, FMassE
 		for (int32 i = 0; i < NumEntities; ++i)
 		{
 			const FVector& Location = LocationList[i].GetTransform().GetLocation();
-			MassSampleSystem->HashGrid.UpdatePoint(Context.GetEntity(i),NavigationObstacleCellLocationList[i].Location,Location);
+			MassSampleSystem.HashGrid.UpdatePoint(Context.GetEntity(i),NavigationObstacleCellLocationList[i].Location,Location);
 
 			NavigationObstacleCellLocationList[i].Location = Location;
 		}
@@ -59,6 +60,7 @@ void UMSHashGridMemberInitializationProcessor::ConfigureQueries()
 {
 	EntityQuery.AddRequirement<FMSGridCellStartingLocationFragment>(EMassFragmentAccess::ReadOnly);
 	EntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadOnly);
+	EntityQuery.RegisterWithProcessor(*this);
 }
 
 void UMSHashGridMemberInitializationProcessor::Execute(UMassEntitySubsystem& EntitySubsystem, FMassExecutionContext& Context)

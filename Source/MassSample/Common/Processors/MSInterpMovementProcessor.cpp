@@ -17,6 +17,7 @@ void UMSInterpMovementProcessor::ConfigureQueries()
 	EntityQuery.AddRequirement<FInterpLocationFragment>(EMassFragmentAccess::ReadWrite);
 	EntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadWrite);
 	EntityQuery.AddRequirement<FOriginalTransformFragment>(EMassFragmentAccess::ReadOnly);
+	EntityQuery.RegisterWithProcessor(*this);
 
 }
 

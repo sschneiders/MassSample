@@ -9,6 +9,7 @@
 
 UMSEntityViewBenchMark::UMSEntityViewBenchMark()
 {
+	bAutoRegisterWithProcessingPhases = false;
 	int shouldregister = -1;
 	if(FParse::Value(FCommandLine::Get(), TEXT("ViewBenchmarkCount="), shouldregister))
 	{
@@ -57,13 +58,16 @@ void UMSEntityViewBenchMark::Initialize(UObject& Owner)
 void UMSEntityViewBenchMark::ConfigureQueries()
 {
 	EntityViewQuery.AddRequirement<FEntityViewBenchmarkFragment>(EMassFragmentAccess::ReadOnly);
+	EntityViewQuery.RegisterWithProcessor(*this);
+
+	
 
 	ExecutionOrder.ExecuteInGroup = UE::Mass::ProcessorGroupNames::SyncWorldToMass;
 }
 
 void UMSEntityViewBenchMark::BenchA(FMassEntityHandle Entity)
 {
-	DECLARE_SCOPE_CYCLE_COUNTER(TEXT("BenchA"), STAT_EntityView, STATGROUP_MASSSAMPLEVIEW);
+	DECLARE_SCOPE_CYCLE_COUNTER(TEXT("BenchA (new)"), STAT_EntityView, STATGROUP_MASSSAMPLEVIEW);
 	
 	FPlatformMisc::MemoryBarrier();
 	
@@ -91,7 +95,7 @@ void UMSEntityViewBenchMark::BenchA(FMassEntityHandle Entity)
 
 void UMSEntityViewBenchMark::BenchB(FMassEntityHandle Entity)
 {
-	DECLARE_SCOPE_CYCLE_COUNTER(TEXT("BenchB"), STAT_WrappedEntityView, STATGROUP_MASSSAMPLEVIEWWRAPPED);
+	DECLARE_SCOPE_CYCLE_COUNTER(TEXT("BenchB (old)"), STAT_WrappedEntityView, STATGROUP_MASSSAMPLEVIEWWRAPPED);
 
 	FPlatformMisc::MemoryBarrier();
 
